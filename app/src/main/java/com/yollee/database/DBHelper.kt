@@ -69,8 +69,8 @@ class DBHelper(context: Context?, name: String? = DATABASE_NAME, factory: SQLite
 
                 for (i in 0 until fullnames.size) {
                     cv.put(KEY_NAME, splittedNames[i][0])
-                    cv.put(KEY_SURNAME, splittedNames[i][1])
-                    cv.put(KEY_MIDDLENAME, splittedNames[i][2])
+                    cv.put(KEY_SURNAME, splittedNames[i][2])
+                    cv.put(KEY_MIDDLENAME, splittedNames[i][1])
                     db.insert("temp", null, cv)
                 }
 
