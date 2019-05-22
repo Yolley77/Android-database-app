@@ -24,7 +24,7 @@ class StudentList : AppCompatActivity() {
                 .beginTransaction()
 
             for (i in 0 until students.size) {
-                val fragment = StudentFragment(students[i].fullName, students[i].time)
+                val fragment = StudentFragment(students[i].id, students[i].fullName, students[i].time)
                 fragmentTransaction.add(R.id.container, fragment)
 
             }
