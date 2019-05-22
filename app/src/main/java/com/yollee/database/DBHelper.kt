@@ -39,7 +39,7 @@ class DBHelper(context: Context?, name: String? = DATABASE_NAME, factory: SQLite
             db?.beginTransaction()
             try {
                 db?.execSQL("create temporary table ${TABLE_NAME}_tmp ("
-                + "$KEY_ID integer, $KEY_FULLNAME text, $KEY_TIME text);"
+                + "$KEY_ID integer primary key, $KEY_FULLNAME text, $KEY_TIME text);"
                 )
                 db?.execSQL("insert into ${TABLE_NAME}_tmp select $KEY_ID, $KEY_FULLNAME, $KEY_TIME from $TABLE_NAME;")
                 db?.execSQL("drop table $TABLE_NAME;")
@@ -51,7 +51,7 @@ class DBHelper(context: Context?, name: String? = DATABASE_NAME, factory: SQLite
                 val cursor = db?.query(TABLE_NAME + "_tmp", null, null, null, null, null, null)
                 val fullnames : ArrayList<String> = ArrayList()
                 if(cursor!!.moveToFirst()) {
-                    val fullnameInd = cursor.getColumnIndex(KEY_ID)
+                    val fullnameInd = cursor.getColumnIndex(KEY_FULLNAME)
                     do {
                         fullnames.add(cursor.getString(fullnameInd))
                     } while (cursor.moveToNext())
@@ -59,7 +59,7 @@ class DBHelper(context: Context?, name: String? = DATABASE_NAME, factory: SQLite
                 cursor.close()
                 val splittedNames : ArrayList<List<String>> = ArrayList()
                 for (i in 0 until fullnames.size) {
-                    splittedNames[i] = fullnames[i].split(" ")
+                    splittedNames.add(fullnames[i].split(" "))
                 }
 
                 db?.execSQL("create temporary table temp (  $KEY_ID"
@@ -67,15 +67,15 @@ class DBHelper(context: Context?, name: String? = DATABASE_NAME, factory: SQLite
                         + "$KEY_SURNAME  text, $KEY_MIDDLENAME text)"
                 )
 
-                for (i in 0 until splittedNames.size) {
+                for (i in 0 until fullnames.size) {
                     cv.put(KEY_NAME, splittedNames[i][0])
-                    cv.put(KEY_SURNAME, splittedNames[i][1])
-                    cv.put(KEY_MIDDLENAME, splittedNames[i][2])
+                    cv.put(KEY_SURNAME, splittedNames[i][0])
+                    cv.put(KEY_MIDDLENAME, splittedNames[i][0])
                     db.insert("temp", null, cv)
                 }
 
 
-                db?.execSQL("insert into $TABLE_NAME select $KEY_ID, $KEY_NAME, $KEY_SURNAME, " +
+                db?.execSQL("insert into $TABLE_NAME(name, surname, middlename, time) select  $KEY_NAME, $KEY_SURNAME, " +
                         "$KEY_MIDDLENAME, $KEY_TIME from ${TABLE_NAME}_tmp, temp")
                 db?.execSQL("drop table ${TABLE_NAME}_tmp")
                 db?.execSQL("drop table" + " temp;")
