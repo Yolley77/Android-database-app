@@ -39,7 +39,7 @@ class DBHelper(context: Context?, name: String? = DATABASE_NAME, factory: SQLite
             db?.beginTransaction()
             try {
                 db?.execSQL("create temporary table ${TABLE_NAME}_tmp ("
-                + "$KEY_ID integer primary key, $KEY_FULLNAME text, $KEY_TIME text);"
+                + "$KEY_ID integer, $KEY_FULLNAME text, $KEY_TIME text);"
                 )
                 db?.execSQL("insert into ${TABLE_NAME}_tmp select $KEY_ID, $KEY_FULLNAME, $KEY_TIME from $TABLE_NAME;")
                 db?.execSQL("drop table $TABLE_NAME;")
@@ -75,8 +75,11 @@ class DBHelper(context: Context?, name: String? = DATABASE_NAME, factory: SQLite
                 }
 
 
+                /*db?.execSQL("insert into $TABLE_NAME(name, surname, middlename, time) select  $KEY_NAME, $KEY_SURNAME, " +
+                        "$KEY_MIDDLENAME, $KEY_TIME from ${TABLE_NAME}_tmp, temp")*/
                 db?.execSQL("insert into $TABLE_NAME(name, surname, middlename, time) select  $KEY_NAME, $KEY_SURNAME, " +
-                        "$KEY_MIDDLENAME, $KEY_TIME from ${TABLE_NAME}_tmp, temp")
+                        "$KEY_MIDDLENAME from temp union" +
+                        "sselect $KEY_TIME from ${TABLE_NAME}_tmp")
                 db?.execSQL("drop table ${TABLE_NAME}_tmp")
                 db?.execSQL("drop table" + " temp;")
 
