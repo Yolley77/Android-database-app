@@ -26,10 +26,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
         dbHelper = DBHelper(this)
         db = dbHelper.writableDatabase
-        db.delete(TABLE_NAME, null, null)
-        for (i in 0..4) {
+
+        //db.delete(TABLE_NAME, null, null)
+        /*for (i in 0..4) {
             setRandomStudent()
-        }
+        }*/
 
         seeButton.setOnClickListener(this)
         addButton.setOnClickListener(this)
@@ -41,18 +42,19 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         when(v.id) {
             R.id.seeButton ->{
                 val cursor = db.query(TABLE_NAME, null, null, null, null, null, null)
-                //val data : ArrayList<String> = ArrayList()
                 val students : ArrayList<Student> = ArrayList()
                 if(cursor.moveToFirst()) {
                     val idInd = cursor.getColumnIndex(KEY_ID)
-                    val fullnameInd = cursor.getColumnIndex(KEY_FULLNAME)
+                    val nameInd = cursor.getColumnIndex(KEY_NAME)
+                    val surnameInd = cursor.getColumnIndex(KEY_SURNAME)
+                    val middlenameInd = cursor.getColumnIndex(KEY_MIDDLENAME)
                     val timeInd = cursor.getColumnIndex(KEY_TIME)
                     do {
-                        students.add(Student(cursor.getInt(idInd), cursor.getString(fullnameInd), cursor.getString(timeInd)))
-                        //data.add(cursor.getInt(idInd).toString() + " : " + cursor.getString(fullnameInd) + " : " + cursor.getString(timeInd) + "\n")
+                        students.add(Student(cursor.getInt(idInd), cursor.getString(nameInd),
+                            cursor.getString(surnameInd), cursor.getString(middlenameInd), cursor.getString(timeInd)))
                     } while (cursor.moveToNext())
                 } else {
-                    //data.add("NOTHING")
+                    students.add(Student())
                 }
                 cursor.close()
 
@@ -67,14 +69,16 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             }
             R.id.changeButton -> {
                 // Метод, меняющий последнего поцика на ваню
-                cv.put(KEY_FULLNAME, "Иванов Иван Иванович")
+                cv.put(KEY_NAME, "Иван")
+                cv.put(KEY_SURNAME, "Иванов")
+                cv.put(KEY_MIDDLENAME, "Иванович")
                 cv.put(KEY_TIME, LocalDateTime.now().toString())
 
                 val cursor = db.query(TABLE_NAME, null, null, null, null, null, null)
                 val cnt = cursor.count
                 cursor.close()
 
-                Log.wtf("CNT IS - ", "$cnt")
+                Log.d("CNT IS - ", "$cnt")
                 db.update(TABLE_NAME, cv, "$KEY_ID = ?", arrayOf("$cnt"))
             }
         }
@@ -84,7 +88,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     fun setRandomStudent() {
         val s = Student()
         s.setRandomStudent()
-        cv.put(KEY_FULLNAME, s.fullName)
+        cv.put(KEY_NAME, s.name)
+        cv.put(KEY_SURNAME, s.surname)
+        cv.put(KEY_MIDDLENAME, s.middlename)
         cv.put(KEY_TIME, s.time)
         db.insert(TABLE_NAME, null, cv)
     }

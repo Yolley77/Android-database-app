@@ -13,8 +13,9 @@ class StudentList : AppCompatActivity() {
         //studentsView.text = intent.getStringArrayListExtra("data").toString()
         val students = intent.getParcelableArrayListExtra<Student>("students")
         for (i in 0 until students.size) {
-            Log.i("ELEMENT ${i+1}", students[i].fullName
-                    + " " + (students[i].time))
+            Log.i("ELEMENT ${i+1}", students[i].name + " "
+                    + students[i].surname + " " + students[i].middlename + " "
+                    + (students[i].time))
         }
 
         if(savedInstanceState == null) {
@@ -24,9 +25,9 @@ class StudentList : AppCompatActivity() {
                 .beginTransaction()
 
             for (i in 0 until students.size) {
-                val fragment = StudentFragment(students[i].id, students[i].fullName, students[i].time)
+                val fragment = StudentFragment(students[i].id, students[i].name,
+                    students[i].surname, students[i].middlename, students[i].time)
                 fragmentTransaction.add(R.id.container, fragment)
-
             }
             fragmentTransaction.commit()
         }

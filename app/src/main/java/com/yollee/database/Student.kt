@@ -6,7 +6,8 @@ import android.os.Parcelable
 import android.support.annotation.RequiresApi
 import java.time.LocalDateTime
 
-class Student(var id : Int = 0, var fullName : String = "", var time : String = "") : Parcelable {
+class Student(var id : Int = 0, var name : String = "", var surname : String = "",
+              var middlename : String = "", var time : String = "") : Parcelable {
 
     val names : Array<String> = arrayOf(
         "Владимир", "Иосиф", "Георгий", "Никита", "Леонид", "Юрий", "Константин", "Михаил",
@@ -25,12 +26,16 @@ class Student(var id : Int = 0, var fullName : String = "", var time : String = 
     constructor(parcel: Parcel) : this(
         parcel.readInt(),
         parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
         parcel.readString()
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeInt(id)
-        parcel.writeString(fullName)
+        parcel.writeString(name)
+        parcel.writeString(surname)
+        parcel.writeString(middlename)
         parcel.writeString(time)
     }
 
@@ -50,7 +55,9 @@ class Student(var id : Int = 0, var fullName : String = "", var time : String = 
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun setRandomStudent() {
-        fullName = names[(Math.random() * 100).toInt()%15]  + " " + middlenames[(Math.random() * 10).toInt()%7] + " " + surnames[(Math.random() * 100).toInt()%16]
+        name = names[(Math.random() * 100).toInt()%15]
+        surname = surnames[(Math.random() * 100).toInt()%16]
+        middlename = middlenames[(Math.random() * 10).toInt()%7]
         time = LocalDateTime.now().toString()
     }
 }
