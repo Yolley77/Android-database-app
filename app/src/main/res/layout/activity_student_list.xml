@@ -11,16 +11,19 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-                      android:orientation="vertical">
+                      android:orientation="vertical" android:id="@+id/container">
             <TextView
-                    android:text="Студенты"
+                    android:text="Великие"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/studentsView"
                     android:layout_marginTop="8dp"
                     android:layout_marginStart="8dp"
-                    android:textSize="14sp" android:textStyle="italic" android:lineSpacingExtra="8sp"
+                    android:textSize="14sp" android:textStyle="bold|italic" android:lineSpacingExtra="8sp"
             />
+            <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"/>
         </LinearLayout>
     </ScrollView>
 </android.support.constraint.ConstraintLayout>

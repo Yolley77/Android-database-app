@@ -7,7 +7,7 @@
         android:layout_height="match_parent"
         tools:context=".MainActivity" android:background="#3C3F41">
     <Button
-            android:text="Смотреть"
+            android:text="Посмотреть"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:id="@+id/seeButton" android:layout_marginBottom="16dp"
@@ -17,7 +17,7 @@
             android:layout_marginStart="130dp" app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginEnd="131dp" app:layout_constraintHorizontal_bias="0.0"/>
     <Button
-            android:text="Добавлять"
+            android:text="Добавить"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:id="@+id/addButton" android:layout_marginBottom="16dp"
@@ -28,7 +28,7 @@
             app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="131dp"
             app:layout_constraintHorizontal_bias="0.0"/>
     <Button
-            android:text="Менять"
+            android:text="Иван"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:id="@+id/changeButton" android:layout_marginBottom="272dp"

@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         when(v.id) {
             R.id.seeButton ->{
                 val cursor = db.query(TABLE_NAME, null, null, null, null, null, null)
-                val data : ArrayList<String> = ArrayList()
+                //val data : ArrayList<String> = ArrayList()
                 val students : ArrayList<Student> = ArrayList()
                 if(cursor.moveToFirst()) {
                     val idInd = cursor.getColumnIndex(KEY_ID)
@@ -49,15 +49,15 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                     val timeInd = cursor.getColumnIndex(KEY_TIME)
                     do {
                         students.add(Student(cursor.getInt(idInd), cursor.getString(fullnameInd), cursor.getString(timeInd)))
-                        data.add(cursor.getInt(idInd).toString() + " : " + cursor.getString(fullnameInd) + " : " + cursor.getString(timeInd) + "\n")
+                        //data.add(cursor.getInt(idInd).toString() + " : " + cursor.getString(fullnameInd) + " : " + cursor.getString(timeInd) + "\n")
                     } while (cursor.moveToNext())
                 } else {
-                    data.add("NOTHING")
+                    //data.add("NOTHING")
                 }
                 cursor.close()
 
                 val i = Intent(baseContext, StudentList::class.java)
-                i.putStringArrayListExtra("data", data)
+                //i.putStringArrayListExtra("data", data)
                 i.putParcelableArrayListExtra("students", students)
                 startActivity(i)
             }
