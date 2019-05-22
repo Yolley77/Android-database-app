@@ -50,10 +50,14 @@ class DBHelper(context: Context?, name: String? = DATABASE_NAME, factory: SQLite
 
                 val cursor = db?.query(TABLE_NAME + "_tmp", null, null, null, null, null, null)
                 val fullnames : ArrayList<String> = ArrayList()
+                val times : ArrayList<String> = ArrayList()
                 if(cursor!!.moveToFirst()) {
                     val fullnameInd = cursor.getColumnIndex(KEY_FULLNAME)
+                    val timeId = cursor.getColumnIndex(KEY_TIME)
                     do {
                         fullnames.add(cursor.getString(fullnameInd))
+                        times.add(cursor.getString(timeId))
+
                     } while (cursor.moveToNext())
                 }
                 cursor.close()
@@ -64,22 +68,20 @@ class DBHelper(context: Context?, name: String? = DATABASE_NAME, factory: SQLite
 
                 db?.execSQL("create temporary table temp (  $KEY_ID"
                         + " integer primary key, $KEY_NAME text,"
-                        + "$KEY_SURNAME  text, $KEY_MIDDLENAME text)"
+                        + "$KEY_SURNAME  text, $KEY_MIDDLENAME text, $KEY_TIME text)"
                 )
 
                 for (i in 0 until fullnames.size) {
                     cv.put(KEY_NAME, splittedNames[i][0])
                     cv.put(KEY_SURNAME, splittedNames[i][2])
                     cv.put(KEY_MIDDLENAME, splittedNames[i][1])
+                    cv.put(KEY_TIME, times[i])
                     db.insert("temp", null, cv)
                 }
 
 
-                /*db?.execSQL("insert into $TABLE_NAME(name, surname, middlename, time) select  $KEY_NAME, $KEY_SURNAME, " +
-                        "$KEY_MIDDLENAME, $KEY_TIME from ${TABLE_NAME}_tmp, temp")*/
                 db?.execSQL("insert into $TABLE_NAME(name, surname, middlename, time) select  $KEY_NAME, $KEY_SURNAME, " +
-                        "$KEY_MIDDLENAME from temp union" +
-                        "sselect $KEY_TIME from ${TABLE_NAME}_tmp")
+                        "$KEY_MIDDLENAME, $KEY_TIME from temp")
                 db?.execSQL("drop table ${TABLE_NAME}_tmp")
                 db?.execSQL("drop table" + " temp;")
 
