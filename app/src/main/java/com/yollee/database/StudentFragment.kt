@@ -22,7 +22,7 @@ class StudentFragment constructor(var _id : Int, var name: String,
         val time = TextView(context)
 
         val idText = this._id.toString() + ". "
-        val fullnameText = this.name + " " + this.surname + " " + this.middlename + " "
+        val fullnameText = this.name + " " + this.middlename + " " + this.surname + " "
         val timeText = this.time + "\n"
 
         id.text = idText
